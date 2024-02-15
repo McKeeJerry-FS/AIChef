@@ -20,6 +20,7 @@ namespace AIChef.Server.Controllers
 		public async Task<ActionResult<List<Idea>>> GetRecipeIdeas(RecipeParms recipeParms) 
 		{
 			//return SampleData.RecipeIdeas;
+
 			string mealTime = recipeParms.MealTime;
 			List<string> ingredients = recipeParms.Ingredients
 												  .Where(i => !string.IsNullOrEmpty(i.Description))
