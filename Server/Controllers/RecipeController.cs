@@ -1,4 +1,5 @@
-﻿using AIChef.Server.Services.Interfaces;
+﻿using AIChef.Server.Data;
+using AIChef.Server.Services.Interfaces;
 using AIChef.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,18 @@ namespace AIChef.Server.Controllers
 			var ideas = await _openAiService.CreateRecipeIdeas(mealTime, ingredients);
 			return ideas;
 
+		}
+
+		[HttpPost, Route("/GetRecipe")]
+		public async Task<ActionResult<Recipe?>> GetRecipe(RecipeParms recipeParms)
+		{
+			return SampleData.Recipe;
+		}
+
+		[HttpGet, Route("/GetRecipeImage")]
+		public async Task<ActionResult<RecipeImage>> GetRecipeImage(string? title)
+		{
+			return SampleData.RecipeImage;
 		}
 	}
 }
