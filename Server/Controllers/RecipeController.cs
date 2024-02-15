@@ -39,11 +39,11 @@ namespace AIChef.Server.Controllers
 
 		}
 
-		[HttpPost, Route("/GetRecipe")]
+		[HttpPost, Route("GetRecipe")]
 		public async Task<ActionResult<Recipe?>> GetRecipe(RecipeParms recipeParms)
 		{
-			//return SampleData.Recipe
-			
+			//return SampleData.Recipe;
+
 			List<string> ingredients = recipeParms.Ingredients.Where(r => !string.IsNullOrEmpty(r.Description))
 															  .Select(r => r.Description!)
 															  .ToList();
@@ -58,7 +58,7 @@ namespace AIChef.Server.Controllers
 
 		}
 
-		[HttpGet, Route("/GetRecipeImage")]
+		[HttpGet, Route("GetRecipeImage")]
 		public async Task<ActionResult<RecipeImage>> GetRecipeImage(string? title)
 		{
 			return SampleData.RecipeImage;
