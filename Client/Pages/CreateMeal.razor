@@ -41,7 +41,7 @@
 								<tbody>
 									@foreach(var item in ingredients)
 									{
-										<tr class="">
+										<tr class="m-2">
 											<td>
 												@item.Description
 											</td>
@@ -55,7 +55,7 @@
 						</div>
 					</div>
 					<div class="col-12 mb-3">
-						<button class="btn btn-success rounded" @onclick="HandleSubmit">Generate</button>
+						<button class="generateBtn btn btn-success rounded" @onclick="HandleSubmit">Generate</button>
 					</div>
 				</div>
 			</EditForm>

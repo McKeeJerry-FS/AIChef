@@ -11,10 +11,10 @@
 {	
 	<div class="container mt-5 h-100">
 		<div class="d-flex flex-column flex-lg-row justify-content-start">
-			<div class="text-center text-lg-start">
+			<div class="text-center text-lg-start mt-3">
 				<img src="@recipeImageUrl" class="rounded-3 recipeImage" />
 			</div>
-			<div class="flex-grow-1 px-3">
+			<div class="flex-grow-1 px-3 mt-3">
 				<h1 class="fw-bold">@recipe!.title</h1>
 				<p>@recipe.summary</p>
 				<div class="text-end">
@@ -23,7 +23,7 @@
 			</div>
 		</div>
 		<div class="row row-cols-1 row-cols-md-2">
-			<div class="col mt-3">
+			<div class="col mt-3 mb-3">
 				<h2>Ingredients:</h2>
 				<ul>
 					@foreach(var item in recipe.ingredients!)
@@ -32,7 +32,7 @@
 					}
 				</ul>
 			</div>
-			<div class="col">
+			<div class="col mt-3 mb-3">
 				<h2>Instructions:</h2>
 				<ol>
 					@foreach(var item in recipe.instructions!)
