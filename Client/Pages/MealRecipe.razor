@@ -2,8 +2,8 @@
 @using AIChef.Shared
 @using System.Text.Json
 @using System.Web
-@inject HttpClient Http
-@inject NavigationManager NavigationManager
+@inject HttpClient Http;
+@inject NavigationManager NavigationManager;
 
 
 @if(loaded == true)
@@ -11,7 +11,7 @@
 	<div class="container mt-5 h-100">
 		<div class="d-flex flex-column flex-lg-row justify-content-start">
 			<div class="text-center text-lg-start">
-				<img src="@recipeImageUrl" class="rounded-3" />
+				<img src="@recipeImageUrl" class="rounded-3 recipeImage" />
 			</div>
 			<div class="flex-grow-1 px-3">
 				<h1 class="fw-bold">@recipe!.title</h1>
@@ -93,8 +93,10 @@ else
 
 			// get the recipe
 			HttpResponseMessage responseRecipe = await Http.PostAsJsonAsync(baseUri, recipeParms);
+			
 			responseRecipe.EnsureSuccessStatusCode();
-			recipe = await responseRecipe.Content.ReadFromJsonAsync<Recipe>();
+			
+			recipe = (await responseRecipe.Content.ReadFromJsonAsync<Recipe>())!;
 
 			loaded = true;
 			StateHasChanged();
