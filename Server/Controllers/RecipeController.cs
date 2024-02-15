@@ -3,6 +3,7 @@ using AIChef.Server.Services.Interfaces;
 using AIChef.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace AIChef.Server.Controllers
 {
@@ -41,7 +42,20 @@ namespace AIChef.Server.Controllers
 		[HttpPost, Route("/GetRecipe")]
 		public async Task<ActionResult<Recipe?>> GetRecipe(RecipeParms recipeParms)
 		{
-			return SampleData.Recipe;
+			//return SampleData.Recipe
+			
+			List<string> ingredients = recipeParms.Ingredients.Where(r => !string.IsNullOrEmpty(r.Description))
+															  .Select(r => r.Description!)
+															  .ToList();
+			string? title = recipeParms.SelectedIdea;
+
+			if (string.IsNullOrEmpty(title))
+			{
+				return BadRequest();
+			}
+			var recipe = await _openAiService.CreateRecipe(title, ingredients);
+			return recipe;
+
 		}
 
 		[HttpGet, Route("/GetRecipeImage")]
