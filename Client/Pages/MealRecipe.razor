@@ -4,6 +4,7 @@
 @using System.Web
 @inject HttpClient Http;
 @inject NavigationManager NavigationManager;
+@inject IJSRuntime Js;
 
 
 @if(loaded == true)
@@ -16,6 +17,9 @@
 			<div class="flex-grow-1 px-3">
 				<h1 class="fw-bold">@recipe!.title</h1>
 				<p>@recipe.summary</p>
+				<div class="text-end">
+					<button class="btn btn-success d-print-none" @onclick="Print">Print Recipe</button>
+				</div>
 			</div>
 		</div>
 		<div class="row row-cols-1 row-cols-md-2">
@@ -87,15 +91,15 @@ else
 			HttpResponseMessage responseImage = await Http.GetAsync($"Recipe/GetRecipeImage?title={HttpUtility.UrlEncode(title)}");
 			var recipeImage = await responseImage.Content.ReadFromJsonAsync<RecipeImage>();
 			recipeImageUrl = recipeImage!.data![0]!.url;
-				
-			
+
+
 
 
 			// get the recipe
 			HttpResponseMessage responseRecipe = await Http.PostAsJsonAsync(baseUri, recipeParms);
-			
+
 			responseRecipe.EnsureSuccessStatusCode();
-			
+
 			recipe = (await responseRecipe.Content.ReadFromJsonAsync<Recipe>())!;
 
 			loaded = true;
@@ -104,8 +108,14 @@ else
 		}
 		catch (Exception)
 		{
-			
+
 			Console.WriteLine("Error: Could not generate recipe");
 		}
+	}
+
+	private async Task Print()
+	{
+		// calling a method in a js file
+		await Js.InvokeVoidAsync("printInvoke");
 	}
 }
