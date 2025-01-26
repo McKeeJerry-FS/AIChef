@@ -1,0 +1,108 @@
+﻿@page "/mealideas"
+@using AIChef.Shared
+@using System.Text.Json
+@inject NavigationManager navigationManager
+@inject HttpClient Http
+
+
+@if (loaded is true)
+{	
+	<div class="container">
+		<h3 class="mt-5">Pick a meal to make...</h3>
+		<div class="list-group m-5">
+			@foreach(var idea in ideas)
+			{
+				<button @onclick="() => GetRecipe(idea.index)" class="list-group-item list-group-item-action list-group-item-success p-2 mb-3">
+					<div class="d-flex w-100 justify-content-sm-between">
+						<h2 class="mb-1 fw-bold">@idea.title</h2>
+					</div>
+						<p class="mb-1">@idea.description</p>
+				</button>
+			}
+		</div>
+	</div>
+}
+else
+{
+	<div class="container">
+		@* <h3>RecipeState Parameters</h3>
+		<h4>@rState!.MealTime</h4>
+		<hr />
+		@foreach(var item in rState.Ingredients!)
+		{
+			<p>@item.Description</p>
+		} *@
+		<LoadingSpinner></LoadingSpinner>
+	</div>
+}
+
+@code {
+	[CascadingParameter]
+	private RecipeState? rState { get; set; }
+
+	private List<Idea> ideas = new List<Idea>();
+	private bool loaded = false;
+
+	private readonly JsonSerializerOptions _jsonOptions = new()
+		{
+			PropertyNameCaseInsensitive = true,
+			PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+			DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+		};
+
+	protected override void OnInitialized()
+	{
+		if (rState is null)
+		{
+			navigationManager.NavigateTo("/", forceLoad: true);
+			return;
+		}
+
+		if (rState.Ideas!.Count < 1)
+		{
+			GetIdeas();
+		}
+		else
+		{
+			loaded = true;
+			ideas = rState.Ideas;
+			StateHasChanged();
+		}
+
+
+	}
+
+	private async void GetIdeas()
+	{
+		string baseUri = "Recipe/GetRecipeIdeas";
+		loaded = false;
+
+		RecipeParms recipeParms = new RecipeParms()
+			{
+				MealTime = rState!.MealTime!,
+				Ingredients = rState.Ingredients!
+			};
+
+		// call WebAPI Controller
+		try
+		{
+			HttpResponseMessage response = await Http.PostAsJsonAsync(baseUri, recipeParms, _jsonOptions);
+			response.EnsureSuccessStatusCode();
+			ideas = (await response.Content.ReadFromJsonAsync<List<Idea>>())!;
+			rState.Ideas = ideas;
+			loaded = true;
+			StateHasChanged();
+		}
+		catch (Exception)
+		{
+			Console.WriteLine("Error: Could not fetch recipe ideas");
+			throw;
+		}
+
+	}
+
+	private void GetRecipe(int index)
+	{
+		navigationManager.NavigateTo($"/mealRecipe/{index}");
+	}
+}
