@@ -1,0 +1,5 @@
+[phases.setup]
+nixPkgs = ["dotnet-sdk_7"]
+
+[variables]
+DOTNET_ROOT = "/nix/var/nix/profiles/default"
