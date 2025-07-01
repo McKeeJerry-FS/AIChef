@@ -160,15 +160,25 @@ namespace AIChef.Server.Services
 
 			ChatRequest request = new()
 			{
-				Model = "gpt-3.5-turbo-0613",
+				Model = "gpt-4.1-2025-04-14",
 				Messages = new[] { systemMessage, userMessage },
 				Functions = new[] {_ideaFunction},
 				FunctionCall = new {Name = _ideaFunction.Name}
 			};
 
-			HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(url, request, _jsonOptions);
+            // Log the URL and request
+            Console.WriteLine($"Requesting: {url}");
+            Console.WriteLine($"Payload: {JsonSerializer.Serialize(request, _jsonOptions)}");
 
-			ChatResponse? response = await httpResponse.Content.ReadFromJsonAsync<ChatResponse>();
+
+            HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(url, request, _jsonOptions);
+
+            // Log the response
+            Console.WriteLine($"Status: {httpResponse.StatusCode}");
+            string responseContent = await httpResponse.Content.ReadAsStringAsync();
+            Console.WriteLine($"Response: {responseContent}");
+
+            ChatResponse? response = await httpResponse.Content.ReadFromJsonAsync<ChatResponse>();
 
 			// get the first message in the function call
 			ChatFunctionResponse? functionResponse = response.Choices?
