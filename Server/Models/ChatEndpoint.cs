@@ -11,7 +11,7 @@ namespace AIChef.Server.ChatEndPoint
 		/// The OpenAI model to use in the request
 		/// </summary>
 		[Required]
-		public string Model { get; set; } = "gpt-3.5-turbo";
+		public string Model { get; set; } = "gpt-4.1";
 
 		/// <summary>
 		/// Required <br />

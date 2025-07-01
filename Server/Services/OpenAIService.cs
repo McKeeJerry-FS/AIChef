@@ -160,7 +160,7 @@ namespace AIChef.Server.Services
 
 			ChatRequest request = new()
 			{
-				Model = "gpt-4.1-2025-04-14",
+				Model = "gpt-4.1",
 				Messages = new[] { systemMessage, userMessage },
 				Functions = new[] {_ideaFunction},
 				FunctionCall = new {Name = _ideaFunction.Name}
@@ -221,7 +221,7 @@ namespace AIChef.Server.Services
 
 			ChatRequest request = new()
 			{
-				Model = "gpt-3.5-turbo-0613",
+				Model = "gpt-4.1",
 				Messages = new[] {userMessage},
 				Functions = new[] {_recipeFunction},
 				FunctionCall = new {Name = _recipeFunction.Name}
