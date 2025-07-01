@@ -36,6 +36,11 @@ else
 	</div>
 }
 
+<form method="post">
+	<!-- form fields -->
+	<button type="submit">Submit</button>
+</form>
+
 @code {
 	[CascadingParameter]
 	private RecipeState? rState { get; set; }
@@ -104,5 +109,10 @@ else
 	private void GetRecipe(int index)
 	{
 		navigationManager.NavigateTo($"/mealRecipe/{index}");
+	}
+
+	private void HandleValidSubmit()
+	{
+		// handle form submission
 	}
 }
